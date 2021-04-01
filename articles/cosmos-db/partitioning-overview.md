@@ -5,7 +5,7 @@ author: deborahc
 ms.author: dech
 ms.service: cosmos-db
 ms.topic: conceptual
-ms.date: 10/12/2020
+ms.date: 03/19/2021
 
 ---
 
@@ -38,7 +38,7 @@ The number of physical partitions in your container depends on the following:
 * The total data storage (each individual physical partition can store up to 50GB data).
 
 > [!NOTE]
-> Physical partitions are an internal implementation of the system and they are entirely managed by Azure Cosmos DB. When developing your solutions, don't focus on physical partitions because you can't control them instead focus on your partition keys. If you choose a partition key that evenly distributes throughput consumption across logical partitions, you will ensure that throughput consumption across physical partitions is balanced.
+> Physical partitions are an internal implementation of the system and they are entirely managed by Azure Cosmos DB. When developing your solutions, don't focus on physical partitions because you can't control them. Instead, focus on your partition keys. If you choose a partition key that evenly distributes throughput consumption across logical partitions, you will ensure that throughput consumption across physical partitions is balanced.
 
 There is no limit to the total number of physical partitions in your container. As your provisioned throughput or data size grows, Azure Cosmos DB will automatically create new physical partitions by splitting existing ones. Physical partition splits do not impact your application's availability. After the physical partition split, all data within a single logical partition will still be stored on the same physical partition. A physical partition split simply creates a new mapping of logical partitions to physical partitions.
 
@@ -60,13 +60,11 @@ Azure Cosmos DB uses hash-based partitioning to spread logical partitions across
 
 Transactions (in stored procedures or triggers) are allowed only against items in a single logical partition.
 
-You can learn more about [how Azure Cosmos DB manages partitions](partitioning-overview.md). (It's not necessary to understand the internal details to build or run your applications, but added here for a curious reader.)
-
 ## Replica sets
 
 Each physical partition consists of a set of replicas, also referred to as a [*replica set*](global-dist-under-the-hood.md). Each replica set hosts an instance of the database engine. A replica set makes the data stored within the physical partition durable, highly available, and consistent. Each replica that makes up the physical partition inherits the partition's storage quota. All replicas of a physical partition collectively support the throughput that's allocated to the physical partition. Azure Cosmos DB automatically manages replica sets.
 
-Typically smaller containers only require a single physical partition but they will still have at least 4 replicas.
+Typically, smaller containers only require a single physical partition, but they will still have at least 4 replicas.
 
 The following image shows how logical partitions are mapped to physical partitions that are distributed globally:
 
